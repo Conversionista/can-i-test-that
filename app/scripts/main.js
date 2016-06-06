@@ -262,10 +262,11 @@ function handleAccounts(response) {
                 text: val.name
             }));
         });
-
+        // updateLocal('feasibility_calc', 'accountId', $('#accountId').val());
         var l = readLocal('feasibility_calc');
-        if (l.accountId) {
-            $('#accountId').val(l.accountId);
+        if (l === 'null' || l === null || l === undefined){
+            $('#modalSettings').modal();
+        } else {
             queryProperties(l.accountId);
         }
 
