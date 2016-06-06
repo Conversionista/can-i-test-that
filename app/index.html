@@ -11,6 +11,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
+    <link rel="stylesheet" href="/bower_components/loadie.js/css/loadie.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css styles/main.css -->
@@ -26,10 +27,12 @@
 </head>
 
 <body>
+
     <!--[if lt IE 10]>
       <div class="container"><div class="alert alert-top alert-warning" role="alert">
       <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <span>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="_blank">upgrade your browser</a> to improve your experience (and have this site working as it suppose).</span></p></div></div>
     <![endif]-->
+    
     <nav class="navbar navbar-default">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -208,7 +211,8 @@
                         <h4 class="modal-title" id="modalSettingsLabel"><i class="fa fa-cog" aria-hidden="true"></i> Settings</h4>
                     </div>
                     <div class="modal-body">
-                        <p><i>Settings will be saved automatically on change</i>.</p>
+                        <p><span class="pull-left"><i>Settings will be saved automatically on change</i>.</span><a href="https://security.google.com/settings/security/permissions" target="_blank" class="btn btn-link pull-right">Revoke Authorization</a></p>
+                        <div class="clearfix clear-fix"></div>
                         <form class="form">
                             <div class="form-group">
                                 <label for="accountId">Account Id</label>
@@ -228,10 +232,6 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <div id="gConnect" class="button pull-left">
-                            <button class="g-signin" data-scope="email" data-clientid="605645049061-a0oej37pp7nipl654qmmk75k6s5pb46l.apps.googleusercontent.com" data-callback="onSignInCallback" data-theme="dark" data-cookiepolicy="single_host_origin">
-                            </button>
-                        </div>
                         <div class="pull-right">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
@@ -278,6 +278,7 @@
     <script src="/bower_components/Chart.js/dist/Chart.js"></script>
     <script src="/bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="/bower_components/numeral/numeral.js"></script>
+    <script src="/bower_components/loadie.js/js/jquery.loadie.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/plugins.js -->
@@ -300,8 +301,7 @@
     <script src="scripts/chart.js"></script>
     <script src="scripts/save.js"></script>
     <!-- endbuild -->
-    <script src="https://apis.google.com/js/client.js?onload=authorize"></script>
-    <script src="https://plus.google.com/js/client:platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js?onload=authorize" async defer></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js" async defer></script>
 </body>
 

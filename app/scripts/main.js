@@ -2,6 +2,21 @@
 var len;
 var queryData = [];
 
+$('body').loadie();
+$('.loadie').fadeIn();
+var progress = 0.2
+
+function addProgress(f) {
+    progress += f;
+    $('body').loadie(progress);
+}
+
+function finishProgress() {
+    progress = 1
+    // console.log('Finished the Loadie - '+progress);
+    $('body').loadie(progress);
+}
+
 /*eslint-disable camelcase*/
 window.cookieconsent_options = {
     'message': 'This website uses cookies to ensure you get the best experience.',
@@ -19,7 +34,7 @@ var CLIENT_ID = '605645049061-a0oej37pp7nipl654qmmk75k6s5pb46l.apps.googleuserco
 var DISCOVERY = 'https://analyticsreporting.googleapis.com/$discovery/rest';
 
 // Set authorized scope.
-var SCOPES = ['https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/plus.me'];
+var SCOPES = ['https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/plus.profile.emails.read'];
 
 $('#go').text('Loading...');
 
@@ -155,6 +170,7 @@ function authorize(event) {
     'use strict';
     // Handles the authorization flow.
     // `immediate` should be false when invoked from the button click.
+    addProgress(0.13);
     var useImmdiate = event ? false : true;
 
     /*eslint-disable camelcase*/
@@ -201,9 +217,10 @@ function authorize(event) {
 
 
             log('Authorized');
-
-
+            addProgress(0.13);
+            gapi.client.load('plus', 'v1', apiClientLoaded);
             queryAccounts();
+
 
 
 
@@ -254,6 +271,7 @@ function showAuthDialog() {
 
 function handleAccounts(response) {
     'use strict';
+    addProgress(0.13);
     if (response.result.items && response.result.items.length) {
         $('#accountId').html('').attr('disabled', false);
         $.each(response.result.items, function(index, val) {
@@ -262,11 +280,15 @@ function handleAccounts(response) {
                 text: val.name
             }));
         });
+        
+        finishProgress();
+
         // updateLocal('feasibility_calc', 'accountId', $('#accountId').val());
         var l = readLocal('feasibility_calc');
         if (l === 'null' || l === null || l === undefined){
             $('#modalSettings').modal();
         } else {
+            $('#accountId').val(l.accountId);
             queryProperties(l.accountId);
         }
 
@@ -294,9 +316,12 @@ function handleProperties(response) {
         });
 
         var l = readLocal('feasibility_calc');
+
         if (l.propertyId) {
             $('#propertyId').val(l.propertyId);
             queryProfiles(l.accountId, l.propertyId);
+        } else {
+            $('#modalSettings').modal();
         }
 
     } else {
@@ -328,6 +353,8 @@ function handleProfiles(response) {
         var l = readLocal('feasibility_calc');
         if (l.profileId) {
             $('#profileId').val(l.profileId);
+        } else {
+            $('#modalSettings').modal();
         }
         log(l);
         $('#go').text('Go!').attr('disabled', false);
@@ -514,7 +541,7 @@ function handleEmailResponse(resp) {
     // console.log(resp);
     if (!resp.error) {
         var primaryEmail;
-        if (resp.emails.length) {
+        if (resp.emails) {
             for (var i = 0; i < resp.emails.length; i++) {
                 if (resp.emails[i].type === 'account') {
                     primaryEmail = resp.emails[i].value;
@@ -544,12 +571,20 @@ function apiClientLoaded() {
 /*eslint-disable no-unused-vars*/
 /**
   * Handler for the signin callback triggered after the user selects an account.
-  */
-function onSignInCallback(resp) {
-    'use strict';
-    gapi.client.load('plus', 'v1', apiClientLoaded);
-}
+//   */
+// function onSignInCallback(resp) {
+//    'use strict';
+//    gapi.client.load('plus', 'v1', apiClientLoaded);
+// }
 /*eslint-enable no-unused-vars*/
+
+// $('.btn-social-icon.btn-google').on('click', function(event) {
+//     event.preventDefault();
+//     /* Act on the event */
+//     $('body').append('<script src="https://plus.google.com/js/client:platform.js?onload=onSignInCallback" async defer></script>');
+
+// });
+
 
 function fcIdentify(name, email) {
     'use strict';
