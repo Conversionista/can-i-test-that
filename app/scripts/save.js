@@ -9,14 +9,25 @@ $('#save').on('click', function() {
         console.log($(el).attr('id'));
 
         var id = $(el).attr('id'),
-            s = readLocal(id);
-        console.log(s);
+            inputSelector = '#' + id + ' input';
+        console.log('***')
+        
+        var tempArr = []
 
-        if (s !== null) {
-            d.push(s);
-        } else {
-            showError('No data?', 'There seems to be no data to save. Please hit <b>go</b> and try again.');
-        }
+        $(inputSelector).each(function(index, el) {
+            console.log($(el).val())
+            tempArr.push($(el).val());
+        });
+
+        var arr = [];
+            arr[id] = tempArr;
+
+        console.log(arr);
+        // if (s !== null) {
+        //     d.push(s);
+        // } else {
+        //     showError('No data?', 'There seems to be no data to save. Please hit <b>go</b> and try again.');
+        // }
 
 
     });

@@ -273,7 +273,7 @@ function handleAccounts(response) {
     'use strict';
     addProgress(0.13);
     if (response.result.items && response.result.items.length) {
-        $('#accountId').html('').attr('disabled', false);
+        $('#accountId').html('<option selected="selected" disabled="true">--Please Select --</option>').attr('disabled', false);
         $.each(response.result.items, function(index, val) {
             $('#accountId').append($('<option/>', {
                 value: val.id,
@@ -307,7 +307,7 @@ function queryAccounts() {
 function handleProperties(response) {
     'use strict';
     if (response.result.items && response.result.items.length) {
-        $('#propertyId').html('').attr('disabled', false);
+        $('#propertyId').html('<option selected="selected" disabled="true">--Please Select --</option>').attr('disabled', false);
         $.each(response.result.items, function(index, val) {
             $('#propertyId').append($('<option/>', {
                 value: val.id,
@@ -342,7 +342,7 @@ function queryProperties(accountId) {
 function handleProfiles(response) {
     'use strict';
     if (response.result.items && response.result.items.length) {
-        $('#profileId').html('').attr('disabled', false);
+        $('#profileId').html('<option selected="selected" disabled="true">--Please Select --</option>').attr('disabled', false);
         $.each(response.result.items, function(index, val) {
             $('#profileId').append($('<option/>', {
                 value: val.id,
@@ -538,7 +538,7 @@ $('#go').on('click', function(event) {
   */
 function handleEmailResponse(resp) {
     'use strict';
-    // console.log(resp);
+    console.log(resp);
     if (!resp.error) {
         var primaryEmail;
         if (resp.emails) {
@@ -588,7 +588,15 @@ function apiClientLoaded() {
 
 function fcIdentify(name, email) {
     'use strict';
-    log(name + '\n' + email);
+
+    if (typeof analytics !== 'undefined') { 
+        log(name + '\n' + email);
+        analytics.identify({
+            name: name,
+            email: email
+        });
+        
+    }
 }
 
 function hideLoginButton() {
